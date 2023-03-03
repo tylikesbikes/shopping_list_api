@@ -7,7 +7,10 @@ const items = require('./fakeDb');
 
 let item = {name:'bike', price:5000};
 
-beforeEach(async() => { items.push(item)})
+beforeEach(async() => { 
+    items.push(item);
+
+});
 
 afterEach(async () => {
     items.length = 0;
@@ -46,10 +49,18 @@ test('update specific item', async() => {
 });
 
 
-test('delete item', async() => {
+test('delete item', async () => {
     expect(items).toHaveLength(1);
-    
-    const res = await request(app).delete('/items/bike');
-
+    expect(items[0].name).toEqual('BIKE');
+    const res = await request(app).delete('/items/BIKE');
+    expect(res.body).toEqual({"message":"deleted"})
     expect(items).toHaveLength(0);
 })
+
+test('delete non-existend item', async () => {
+    
+    const res = await(request(app).delete('/items/steak'))
+
+    expect(res.statusCode).toEqual(400);
+    expect(res.body).toEqual({"error":"Item Not Found"});
+});
