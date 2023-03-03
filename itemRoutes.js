@@ -8,7 +8,7 @@ router.get('/', (req, res, next) => {
 router.post('/', (req, res, next) => {
     const new_item = req.body;
     items.push(new_item);
-    return res.status(201).send({"added":{new_item}});
+    return res.status(201).send({"added":new_item});
 })
 
 router.get('/:name', (req, res, next) => {
